@@ -149,7 +149,9 @@
 
                                 <button
                                     type="submit"
-                                    class="bg-green-600 hover:bg-green-700 text-black font-semibold px-4 py-2 rounded"
+                                    class="bg-green-600 hover:bg-green-700 text-black font-
+
+                                    mibold px-4 py-2 rounded"
                                 >
                                     Reserve this book
                                 </button>
