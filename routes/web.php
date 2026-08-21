@@ -1,12 +1,12 @@
 <?php
-use App\Http\Controllers\LoanController;
+
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LoanController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReservationController;
-
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,8 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/loans/{loan}', [LoanController::class, 'show'])->name('loans.show');
 
     Route::post('/books/{book}/reserve', [ReservationController::class, 'reserve'])->name('reservations.reserve');
-Route::delete('/reservations/{reservation}', [ReservationController::class, 'cancel'])->name('reservations.cancel');
-Route::get('/my-reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::delete('/reservations/{reservation}', [ReservationController::class, 'cancel'])->name('reservations.cancel');
+    Route::get('/my-reservations', [ReservationController::class, 'index'])->name('reservations.index');
 });
 
 require __DIR__.'/auth.php';

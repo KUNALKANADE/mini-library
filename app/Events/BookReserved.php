@@ -10,7 +10,5 @@ class BookReserved
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public Reservation $reservation)
-    {
-    }
+    public function __construct(public Reservation $reservation) {}
 }

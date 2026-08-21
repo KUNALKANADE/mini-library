@@ -11,54 +11,54 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-   public function index(Request $request)
-{
-    $this->authorize('viewAny', Book::class);
+    public function index(Request $request)
+    {
+        $this->authorize('viewAny', Book::class);
 
-    $query = Book::query()->with(['author', 'category']);
+        $query = Book::query()->with(['author', 'category']);
 
-    // Search by title
-    if ($request->filled('search')) {
-        $query->where('title', 'like', '%' . $request->input('search') . '%');
+        // Search by title
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%'.$request->input('search').'%');
+        }
+
+        // Filter by author
+        if ($request->filled('author_id')) {
+            $query->where('author_id', $request->input('author_id'));
+        }
+
+        // Filter by category
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->input('category_id'));
+        }
+
+        // Filter by availability
+        if ($request->input('availability') === 'available') {
+            $query->where('available_copies', '>', 0);
+        } elseif ($request->input('availability') === 'unavailable') {
+            $query->where('available_copies', 0);
+        }
+
+        // Sorting
+        $sort = $request->input('sort', 'title');
+        $direction = $request->input('direction', 'asc');
+
+        $allowedSorts = ['title', 'created_at'];
+        if (in_array($sort, $allowedSorts)) {
+            $query->orderBy($sort, $direction === 'desc' ? 'desc' : 'asc');
+        } elseif ($sort === 'author') {
+            $query->join('authors', 'books.author_id', '=', 'authors.id')
+                ->orderBy('authors.name', $direction === 'desc' ? 'desc' : 'asc')
+                ->select('books.*'); // avoid column collisions from the join
+        }
+
+        $books = $query->paginate(15)->withQueryString();
+
+        $authors = Author::orderBy('name')->get();
+        $categories = Category::orderBy('name')->get();
+
+        return view('books.index', compact('books', 'authors', 'categories'));
     }
-
-    // Filter by author
-    if ($request->filled('author_id')) {
-        $query->where('author_id', $request->input('author_id'));
-    }
-
-    // Filter by category
-    if ($request->filled('category_id')) {
-        $query->where('category_id', $request->input('category_id'));
-    }
-
-    // Filter by availability
-    if ($request->input('availability') === 'available') {
-        $query->where('available_copies', '>', 0);
-    } elseif ($request->input('availability') === 'unavailable') {
-        $query->where('available_copies', 0);
-    }
-
-    // Sorting
-    $sort = $request->input('sort', 'title');
-    $direction = $request->input('direction', 'asc');
-
-    $allowedSorts = ['title', 'created_at'];
-    if (in_array($sort, $allowedSorts)) {
-        $query->orderBy($sort, $direction === 'desc' ? 'desc' : 'asc');
-    } elseif ($sort === 'author') {
-        $query->join('authors', 'books.author_id', '=', 'authors.id')
-            ->orderBy('authors.name', $direction === 'desc' ? 'desc' : 'asc')
-            ->select('books.*'); // avoid column collisions from the join
-    }
-
-    $books = $query->paginate(15)->withQueryString();
-
-    $authors = Author::orderBy('name')->get();
-    $categories = Category::orderBy('name')->get();
-
-    return view('books.index', compact('books', 'authors', 'categories'));
-}
 
     public function create()
     {

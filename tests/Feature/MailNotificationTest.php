@@ -19,25 +19,25 @@ class MailNotificationTest extends TestCase
     use RefreshDatabase;
 
     public function test_borrowing_a_book_sends_confirmation_email(): void
-{
-    $this->withoutExceptionHandling();
+    {
+        $this->withoutExceptionHandling();
 
-    Mail::fake();
+        Mail::fake();
 
-    $member = User::factory()->create();
-    $book = Book::factory()->create([
-        'total_copies' => 1,
-        'available_copies' => 1,
-        'author_id' => Author::factory(),
-        'category_id' => Category::factory(),
-    ]);
+        $member = User::factory()->create();
+        $book = Book::factory()->create([
+            'total_copies' => 1,
+            'available_copies' => 1,
+            'author_id' => Author::factory(),
+            'category_id' => Category::factory(),
+        ]);
 
-    $response = $this->actingAs($member)->post(route('loans.borrow', $book));
+        $response = $this->actingAs($member)->post(route('loans.borrow', $book));
 
-    Mail::assertSent(BookBorrowedMail::class, function ($mail) use ($member) {
-        return $mail->hasTo($member->email);
-    });
-}
+        Mail::assertSent(BookBorrowedMail::class, function ($mail) use ($member) {
+            return $mail->hasTo($member->email);
+        });
+    }
 
     public function test_returning_a_book_notifies_the_next_reserved_member(): void
     {
