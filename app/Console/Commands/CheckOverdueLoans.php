@@ -20,6 +20,7 @@ class CheckOverdueLoans extends Command
 
         if ($overdueLoans->isEmpty()) {
             $this->info('No overdue loans found.');
+
             return self::SUCCESS;
         }
 

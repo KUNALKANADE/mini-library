@@ -23,26 +23,26 @@ class UserFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
-{
-    return [
-        'name' => fake()->name(),
-        'email' => fake()->unique()->safeEmail(),
-        'email_verified_at' => now(),
-        'password' => static::$password ??= Hash::make('password'),
-        'role' => 'member',
-        'remember_token' => Str::random(10),
-    ];
-}
+    {
+        return [
+            'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'email_verified_at' => now(),
+            'password' => static::$password ??= Hash::make('password'),
+            'role' => 'member',
+            'remember_token' => Str::random(10),
+        ];
+    }
 
-public function admin(): static
-{
-    return $this->state(fn () => ['role' => 'admin']);
-}
+    public function admin(): static
+    {
+        return $this->state(fn () => ['role' => 'admin']);
+    }
 
-public function librarian(): static
-{
-    return $this->state(fn () => ['role' => 'librarian']);
-}
+    public function librarian(): static
+    {
+        return $this->state(fn () => ['role' => 'librarian']);
+    }
 
     /**
      * Indicate that the model's email address should be unverified.

@@ -8,10 +8,10 @@ use App\Models\Author;
 
 class AuthorController extends Controller
 {
-            public function __construct()
-{
-    $this->authorizeResource(Author::class, 'author');
-}
+    public function __construct()
+    {
+        $this->authorizeResource(Author::class, 'author');
+    }
 
     public function index()
     {
@@ -52,7 +52,6 @@ class AuthorController extends Controller
         return redirect()->route('authors.index')
             ->with('success', 'Author updated successfully.');
     }
-
 
     public function destroy(Author $author)
     {

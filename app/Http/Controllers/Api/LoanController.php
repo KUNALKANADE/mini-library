@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\BookReturned;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LoanResource;
 use App\Models\Loan;
@@ -48,7 +49,7 @@ class LoanController extends Controller
             }
         });
 
-        event(new \App\Events\BookReturned($loan));
+        event(new BookReturned($loan));
 
         return response()->json([
             'message' => 'Book returned successfully.',

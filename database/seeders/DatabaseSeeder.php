@@ -14,17 +14,17 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory()->admin()->create([
-    'name' => 'Admin User',
-    'email' => 'admin@mini-library.test',
-'password' => 'Admin@123',
-]);
+            'name' => 'Admin User',
+            'email' => 'admin@mini-library.test',
+            'password' => 'Admin@123',
+        ]);
 
-User::factory()->librarian()->create([
-    'name' => 'Librarian User',
-    'email' => 'librarian@mini-library.test',
-]);
+        User::factory()->librarian()->create([
+            'name' => 'Librarian User',
+            'email' => 'librarian@mini-library.test',
+        ]);
 
-$members = User::factory(10)->create(); // defaults to role: member
+        $members = User::factory(10)->create(); // defaults to role: member
 
         $members = User::factory(10)->create();
 

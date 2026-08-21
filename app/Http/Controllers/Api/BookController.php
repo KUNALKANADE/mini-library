@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\BookBorrowed;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookResource;
+use App\Http\Resources\LoanResource;
 use App\Models\Book;
 use App\Models\Loan;
 use Illuminate\Http\Request;
@@ -14,8 +16,7 @@ class BookController extends Controller
     public function index(Request $request)
     {
         $books = Book::with(['author', 'category'])
-            ->when($request->filled('search'), fn ($q) =>
-                $q->where('title', 'like', '%' . $request->input('search') . '%')
+            ->when($request->filled('search'), fn ($q) => $q->where('title', 'like', '%'.$request->input('search').'%')
             )
             ->paginate(15);
 
@@ -33,7 +34,7 @@ class BookController extends Controller
     {
         $this->authorize('create', Loan::class);
 
-        if (!$book->isAvailable()) {
+        if (! $book->isAvailable()) {
             return response()->json([
                 'message' => 'This book is not currently available to borrow.',
             ], 422);
@@ -62,11 +63,11 @@ class BookController extends Controller
             ]);
         });
 
-        event(new \App\Events\BookBorrowed($loan));
+        event(new BookBorrowed($loan));
 
         return response()->json([
             'message' => 'Book borrowed successfully.',
-            'data' => new \App\Http\Resources\LoanResource($loan),
+            'data' => new LoanResource($loan),
         ], 201);
     }
 }

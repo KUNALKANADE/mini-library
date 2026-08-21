@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Loan;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -53,7 +54,7 @@ class BookAuthorizationTest extends TestCase
         $other = User::factory()->create();
         $book = Book::factory()->create();
 
-        $loan = \App\Models\Loan::factory()->create([
+        $loan = Loan::factory()->create([
             'user_id' => $owner->id,
             'book_id' => $book->id,
         ]);

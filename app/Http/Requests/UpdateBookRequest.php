@@ -15,7 +15,7 @@ class UpdateBookRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
-            'isbn' => ['nullable', 'string', 'unique:books,isbn,' . $this->book->id],
+            'isbn' => ['nullable', 'string', 'unique:books,isbn,'.$this->book->id],
             'description' => ['nullable', 'string'],
             'total_copies' => ['required', 'integer', 'min:1'],
             'author_id' => ['required', 'exists:authors,id'],

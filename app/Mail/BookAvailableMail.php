@@ -11,13 +11,11 @@ class BookAvailableMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public Reservation $reservation)
-    {
-    }
+    public function __construct(public Reservation $reservation) {}
 
     public function build()
     {
-        return $this->subject('Available now: ' . $this->reservation->book->title)
+        return $this->subject('Available now: '.$this->reservation->book->title)
             ->view('emails.book-available');
     }
 }

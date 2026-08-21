@@ -10,7 +10,5 @@ class BookReturned
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(public Loan $loan)
-    {
-    }
+    public function __construct(public Loan $loan) {}
 }

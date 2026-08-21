@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Events\BookBorrowed;
-use App\Listeners\SendBookBorrowedNotification;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\Category;
