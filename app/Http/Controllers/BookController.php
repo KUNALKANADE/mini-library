@@ -8,6 +8,8 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Imports\BooksImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BookController extends Controller
 {
@@ -121,4 +123,24 @@ class BookController extends Controller
         return redirect()->route('books.index')
             ->with('success', 'Book deleted successfully.');
     }
+    public function import(Request $request)
+{
+    $this->authorize('create', Book::class);
+
+    $request->validate([
+        'file' => ['required', 'file', 'mimes:xlsx,xls,csv'],
+    ]);
+
+    $import = new BooksImport();
+    Excel::import($import, $request->file('file'));
+
+    $failures = $import->errors();
+
+    if ($failures->isNotEmpty()) {
+        return back()->with('error', "{$failures->count()} row(s) failed and were skipped. Check the format and try again.");
+    }
+
+    return redirect()->route('books.index')
+        ->with('success', 'Books imported successfully.');
+}
 }

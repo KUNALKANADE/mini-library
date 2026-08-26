@@ -33,6 +33,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/books/{book}/reserve', [ReservationController::class, 'reserve'])->name('reservations.reserve');
     Route::delete('/reservations/{reservation}', [ReservationController::class, 'cancel'])->name('reservations.cancel');
     Route::get('/my-reservations', [ReservationController::class, 'index'])->name('reservations.index');
+
+    // routes/web.php, inside the auth group
+    Route::post('/books/import', [BookController::class, 'import'])
+    ->middleware('can:create,App\Models\Book')
+    ->name('books.import');
 });
 
 require __DIR__.'/auth.php';
